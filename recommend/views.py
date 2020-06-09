@@ -12,7 +12,6 @@ from django.http import HttpResponseRedirect
 # Create your views here.
 
 def index(request):
-
     movies = Movie.objects.all()
     query = request.GET.get('q')
 
@@ -24,7 +23,6 @@ def index(request):
 
 
 def detail(request, movie_id):
-
     if not request.user.is_authenticated:
         return redirect("login")
     if not request.user.is_active:
@@ -64,7 +62,6 @@ def detail(request, movie_id):
 
 
 def watch(request):
-
     movies = Movie.objects.filter(watch=True)
     query = request.GET.get('q')
 
@@ -75,9 +72,19 @@ def watch(request):
     return render(request, 'recommend/watch.html', {'movies': movies})
 
 
+def recommend(request):
+    movies = Movie.objects.filter(watch=True)
+    query = request.GET.get('q')
+
+    if query:
+        movies = Movie.objects.filter(Q(title__icontains=query)).distinct()
+        return render(request, 'recommend/watch.html', {'movies': movies})
+    context = {'movies': movies}
+    return render(request, 'recommend/recommend.html', context)
+
+
 # Register user
 def signUp(request):
-
     form = UserForm(request.POST or None)
 
     if form.is_valid():
@@ -100,7 +107,6 @@ def signUp(request):
 
 # Login User
 def Login(request):
-
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
@@ -120,6 +126,5 @@ def Login(request):
 
 # Logout user
 def Logout(request):
-
     logout(request)
     return redirect("login")

@@ -17,8 +17,12 @@
                 <h5>{{movie.genre}}</h5>
             </div>
         </div>
-        {% endfor %}
-        {% endif %}
+    {% endfor %}
+    {% else %}
+        <div class="alert alert-danger">
+            <strong>Sorry!</strong> No movies in your list.
+        </div>
+    {% endif %}
 </div>
 
 {% endblock %}
