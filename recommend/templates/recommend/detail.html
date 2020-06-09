@@ -1,0 +1,61 @@
+{% extends 'recommend/base.html'%}
+{% block title %}{{movies.title}}{% endblock %}
+
+{% block body %}
+
+
+<div class="container-fluid col-sm-offset-1">
+
+    <div class="row">
+        <!-- Left Movie Info -->
+        <div class="col-sm-2 col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <a href="#">
+                        <img src="{{ movies.movie_logo.url}}" class="img-responsive">
+                    </a>
+                    <h2></h2>
+                </div>
+            </div>
+        </div>
+        <!-- Right Movie Info -->
+        <div class="col-sm-offset-1 col-sm-4 col-md-4">
+            <h1 style="color:#fff">{{movies.title}}</h1>
+            <h3><small>Genre: {{movies.genre}}</small></h3>
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <div class="col-sm-offset-0 col-sm-8">
+                <form class="form-horizontal" role="search" method="post" action="{% url 'detail' movies.id %}" onsubmit="return validateForm()"  name="ratingForm">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="row">
+                                <div class="col-lg-14">
+                                    <div class="star-rating">
+                                        <span>Rate Movie</span>
+                                        <span class="fa fa-star-o" data-rating="1"></span>
+                                        <span class="fa fa-star-o" data-rating="2"></span>
+                                        <span class="fa fa-star-o" data-rating="3"></span>
+                                        <span class="fa fa-star-o" data-rating="4"></span>
+                                        <span class="fa fa-star-o" data-rating="5"></span>
+                                        <input type="hidden" name="rating" class="rating-value" value="0" >
+                                        {% csrf_token %}
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="submit" class="button" value="Submit">
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

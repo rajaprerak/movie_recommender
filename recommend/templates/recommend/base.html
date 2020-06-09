@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+
+
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>{% block title %}Movies{% endblock title %}</title>
+
+    {% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'recommend/css/bootstrap.min.css'%}">
+	<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css' >
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+    <link rel='stylesheet' href='{% static "recommend/css/base.css" %}' />
+
+    <style type="text/css">
+        .thumbnail p, .thumbnail h4 {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            }
+        .star-rating {
+            line-height:32px;
+            font-size:1.25em;
+            margin-left:-33px;
+            }
+        .star-rating .fa-star{
+        color: yellow;
+        }
+        .heart-rating {
+            line-height:32px;
+            font-size:1.25em;
+            margin-left:-33px;
+            }
+        .heart-rating .fa-heart{
+        color:yellow;
+        }
+        .button {
+          background-color: #4CAF50;
+          border: none;
+          color: white;
+          padding: 10px 32px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          font-size: 16px;
+          margin: 4px 4px;
+          cursor: pointer;
+          margin-left:45px;
+        }
+        .button1 {
+          background-color: #4CAF50;
+          border: none;
+          color: white;
+          padding: 12px 30px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          font-size: 16px;
+          margin: -4px -4px;
+          cursor: pointer;
+          margin-left:4px;
+        }
+
+    </style>
+</head>
+
+<body style="background-color:#000">
+	<nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="topNavBar">
+
+                <ul class="nav navbar-nav ">
+                    <li><a style="color:#4CAF50" href="/">Movie-Recommender</a></li>
+                </ul>
+                <ul class="nav navbar-nav ">
+                    <li><a href="{% url 'index' %}">&nbsp; Home</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                 {% if not request.user.is_authenticated %}
+                    <li>
+                        <a href="{% url 'signup' %}">
+                            <span aria-hidden="true"></span>SignUp
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'login' %}">
+                            <span aria-hidden="true"></span>Login
+                        </a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="{% url 'logout' %}">
+                            <span aria-hidden="true"></span>&nbsp;Logout
+                        </a>
+                    </li>
+                {% endif %}
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+</div>
+    {% block body %}
+    {% endblock %}
+     <nav class="navbar navbar-bottom">
+    <footer class="page-footer font-small">
+        <hr>
+          <div class="text-center center-block">
+            <br />
+                <a href="https://www.linkedin.com/in/rajaprerak/"><i class="fa fa-linkedin-square fa-3x social"></i></a>
+                <a href="https://github.com/rajaprerak"><i id="social-git"class="fa fa-github-square fa-3x"></i></a>
+        </div>
+        <hr>
+        <div class="footer-copyright text-center py-3">© 2020
+        <a href="#"> Prerak Raja</a>
+    </div>
+
+    </footer>
+    </nav>
+	<script type="text/javascript" src="{%static 'recommend/js/jquery.min.js'%}">
+	</script>
+
+	<script type="text/javascript" src="{%static 'recommend/js/bootstrap.min.js'%}">
+	</script>
+    <script type="text/javascript">
+    var $star_rating = $('.star-rating .fa');
+
+    var SetRatingStar = function() {
+        return $star_rating.each(function() {
+        if (parseInt($star_rating.siblings('input.rating-value').val()) >= parseInt($(this).data('rating'))) {
+            return $(this).removeClass('fa-star-o').addClass('fa-star');
+        } else {
+        return $(this).removeClass('fa-star').addClass('fa-star-o');
+        }
+        });
+        };
+
+    $star_rating.on('click', function() {
+    $star_rating.siblings('input.rating-value').val($(this).data('rating'));
+    return SetRatingStar();
+    });
+
+    SetRatingStar();
+    $(document).ready(function() {
+
+    });
+
+</script>
+<script type="text/javascript">
+    function validateForm(){
+    var x = document.forms["ratingForm"]["rating"].value;
+    if(x=="0"){
+        alert("Invalid Input");
+        return false;
+    }
+    }
+</script>
+
+
+
+</body>
+</html>
