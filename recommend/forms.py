@@ -10,8 +10,3 @@ class UserForm(forms.ModelForm):
         model = User
         fields = ['username', 'email', 'password']
 
-
-class RatingForm(forms.ModelForm):
-    class Meta:
-        model = Myrating
-        fields = ['like','rating','movie']

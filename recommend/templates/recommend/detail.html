@@ -43,6 +43,7 @@
                                         <span class="fa fa-star-o" data-rating="4"></span>
                                         <span class="fa fa-star-o" data-rating="5"></span>
                                         <input type="hidden" name="rating" class="rating-value" value="0" >
+                                        {{rate}}
                                         {% csrf_token %}
                                     </div>
                                 </div>
@@ -52,6 +53,29 @@
                     </div>
                 </form>
 
+                <form class="form-horizontal" role="search" method="post" action="{% url 'detail' movies.id %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="row">
+                                <div class="col-lg-14">
+                                    <div class="star-rating">
+                                        <span>Add to my list  </span>
+                                        {% if movies.watch %}
+                                        <input type="checkbox" name="watch" checked>
+                                        <input type="submit" class="button" value="Add" name="watch">
+                                        {% else %}
+                                        <input type="checkbox" name="watch">
+                                        <input type="submit" class="button" value="Add">
+
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+<!--                            <input type="submit" class="button" value="Add">-->
+                        </div>
+                    </div>
+                </form>
 
             </div>
         </div>

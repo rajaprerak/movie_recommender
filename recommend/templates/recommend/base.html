@@ -81,6 +81,11 @@
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="{% url 'watch' %}">
+                            <span aria-hidden="true"></span>MyList
+                        </a>
+                    </li>
                  {% if not request.user.is_authenticated %}
                     <li>
                         <a href="{% url 'signup' %}">
@@ -112,12 +117,11 @@
         <hr>
           <div class="text-center center-block">
             <br />
-                <a href="https://www.linkedin.com/in/rajaprerak/"><i class="fa fa-linkedin-square fa-3x social"></i></a>
-                <a href="https://github.com/rajaprerak"><i id="social-git"class="fa fa-github-square fa-3x"></i></a>
+                <a href="https://www.linkedin.com/in/rajaprerak/" target="_blank"><i class="fa fa-linkedin-square fa-3x social" style="color:#fff"></i></a>
+                <a href="https://github.com/rajaprerak" target="_blank"><i id="social-git"class="fa fa-github-square fa-3x" style="color:#fff"></i></a>
         </div>
-        <hr>
         <div class="footer-copyright text-center py-3">© 2020
-        <a href="#"> Prerak Raja</a>
+        <a href="http://rajaprerak.github.io/" style="color:#fff"> Prerak Raja</a>
     </div>
 
     </footer>
