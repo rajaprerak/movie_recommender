@@ -3,7 +3,7 @@ from django.contrib.auth import logout
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import *
 from django.http import Http404
-from .models import Movie, Myrating
+from .models import Movie, Myrating, MyList
 from django.db.models import Q
 from django.contrib import messages
 from django.http import HttpResponseRedirect
@@ -29,7 +29,14 @@ def detail(request, movie_id):
     if not request.user.is_active:
         raise Http404
     movies = get_object_or_404(Movie, id=movie_id)
-
+    movie = Movie.objects.get(id=movie_id)
+    
+    temp = list(MyList.objects.all().values().filter(movie_id=movie_id,user=request.user))
+    print(temp)
+    if temp:
+        update = temp[0]['watch']
+    else:
+        update = False
     if request.method == "POST":
 
         # for watch list
@@ -39,13 +46,17 @@ def detail(request, movie_id):
                 update = True
             else:
                 update = False
-            Movie.objects.filter(id=movie_id).update(watch=update)
+            if MyList.objects.all().values().filter(movie_id=movie_id,user=request.user):
+                MyList.objects.all().values().filter(movie_id=movie_id,user=request.user).update(watch=update)
+            else:
+                q=MyList(user=request.user,movie=movie,watch=update)
+                q.save()
             if update:
                 messages.success(request, "Movie added to your list!")
             else:
                 messages.success(request, "Movie removed from your list!")
 
-
+            
         # for rating
         else:
             rate = request.POST['rating']
@@ -67,7 +78,7 @@ def detail(request, movie_id):
             rate_flag = True
             break
 
-    context = {'movies': movies,'movie_rating':movie_rating,'rate_flag':rate_flag}
+    context = {'movies': movies,'movie_rating':movie_rating,'rate_flag':rate_flag,'update':update}
     return render(request, 'recommend/detail.html', context)
 
 
@@ -78,7 +89,8 @@ def watch(request):
     if not request.user.is_active:
         raise Http404
 
-    movies = Movie.objects.filter(watch=True)
+    # my_list = MyList.objects.filter(watch=True)
+    movies = Movie.objects.filter(mylist__watch=True,mylist__user=request.user)
     query = request.GET.get('q')
 
     if query:
@@ -117,7 +129,7 @@ def recommend(request):
     userRatings = userRatings.fillna(0,axis=1)
     corrMatrix = userRatings.corr(method='pearson')
 
-    user = pd.DataFrame(list(Myrating.objects.filter(user=request.user.id).values())).drop(['user_id','id'],axis=1)
+    user = pd.DataFrame(list(Myrating.objects.filter(user=request.user).values())).drop(['user_id','id'],axis=1)
     user_filtered = [tuple(x) for x in user.values]
     movie_id_watched = [each[0] for each in user_filtered]
 
