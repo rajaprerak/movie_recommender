@@ -3,7 +3,7 @@
 {% block body %}
 
 <div class="container-fluid">
-	<h2>Recommendations </h2>
+	<h2>Recommendations for you</h2>
 </div>
 <hr>
 <br>
@@ -12,8 +12,8 @@
 
     <!-- Movie list -->
     <div class="row">
-            {% if movies %}
-            {% for movie in movies %}
+            {% if movie_list %}
+            {% for movie in movie_list %}
                 <div class="col-sm-2 col-md-2 ">
                     <div class="thumbnail">
                         <h4>{{movie.title}}</h4>

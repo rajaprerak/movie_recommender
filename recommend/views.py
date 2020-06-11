@@ -7,7 +7,8 @@ from .models import Movie, Myrating
 from django.db.models import Q
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-
+from django.db.models import Case, When
+import pandas as pd
 
 # Create your views here.
 
@@ -72,14 +73,36 @@ def watch(request):
     return render(request, 'recommend/watch.html', {'movies': movies})
 
 
-def recommend(request):
-    movies = Movie.objects.filter(watch=True)
-    query = request.GET.get('q')
+def get_similar(movie_name,rating,corrMatrix):
+    similar_ratings = corrMatrix[movie_name]*(rating-2.5)
+    similar_ratings = similar_ratings.sort_values(ascending=False)
+    return similar_ratings
 
-    if query:
-        movies = Movie.objects.filter(Q(title__icontains=query)).distinct()
-        return render(request, 'recommend/watch.html', {'movies': movies})
-    context = {'movies': movies}
+
+def recommend(request):
+    movie_rating=pd.DataFrame(list(Myrating.objects.all().values()))
+    userRatings = movie_rating.pivot_table(index=['user_id'],columns=['movie_id'],values='rating')
+    userRatings = userRatings.fillna(0,axis=1)
+    corrMatrix = userRatings.corr(method='pearson')
+
+    user = pd.DataFrame(list(Myrating.objects.filter(user=request.user.id).values())).drop(['user_id','id'],axis=1)
+    user_filtered = [tuple(x) for x in user.values]
+
+    similar_movies = pd.DataFrame()
+    for movie,rating in user_filtered:
+        similar_movies = similar_movies.append(get_similar(movie,rating,corrMatrix),ignore_index = True)
+
+    movies_id = list(similar_movies.sum().sort_values(ascending=False).index)
+    preserved = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(movies_id)])
+    movie_list=list(Movie.objects.filter(id__in = movies_id).order_by(preserved)[:10])
+
+    # movies = Movie.objects.filter(watch=True)
+    # query = request.GET.get('q')
+
+    # if query:
+    #     movies = Movie.objects.filter(Q(title__icontains=query)).distinct()
+    #     return render(request, 'recommend/watch.html', {'movies': movies})
+    context = {'movies': movie_list}
     return render(request, 'recommend/recommend.html', context)
 
 
