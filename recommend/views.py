@@ -57,12 +57,27 @@ def detail(request, movie_id):
             messages.success(request, "Rating has been submitted!")
 
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    out = list(Myrating.objects.filter(user=request.user.id).values())
 
-    context = {'movies': movies}
+    movie_rating = 0
+    rate_flag = False
+    for each in out:
+        if each['movie_id'] == movie_id:
+            movie_rating = each['rating']
+            rate_flag = True
+            break
+
+    context = {'movies': movies,'movie_rating':movie_rating,'rate_flag':rate_flag}
     return render(request, 'recommend/detail.html', context)
 
 
 def watch(request):
+
+    if not request.user.is_authenticated:
+        return redirect("login")
+    if not request.user.is_active:
+        raise Http404
+
     movies = Movie.objects.filter(watch=True)
     query = request.GET.get('q')
 
@@ -80,29 +95,42 @@ def get_similar(movie_name,rating,corrMatrix):
 
 
 def recommend(request):
+
+    if not request.user.is_authenticated:
+        return redirect("login")
+    if not request.user.is_active:
+        raise Http404
+
+
     movie_rating=pd.DataFrame(list(Myrating.objects.all().values()))
+
+    new_user=movie_rating.user_id.unique().shape[0] + 2
+    current_user_id= request.user.id
+	# if new user not rated any movie
+    if current_user_id>new_user:
+        movie=Movie.objects.get(id=19)
+        q=Myrating(user=request.user,movie=movie,rating=0)
+        q.save()
+
+
     userRatings = movie_rating.pivot_table(index=['user_id'],columns=['movie_id'],values='rating')
     userRatings = userRatings.fillna(0,axis=1)
     corrMatrix = userRatings.corr(method='pearson')
 
     user = pd.DataFrame(list(Myrating.objects.filter(user=request.user.id).values())).drop(['user_id','id'],axis=1)
     user_filtered = [tuple(x) for x in user.values]
+    movie_id_watched = [each[0] for each in user_filtered]
 
     similar_movies = pd.DataFrame()
     for movie,rating in user_filtered:
         similar_movies = similar_movies.append(get_similar(movie,rating,corrMatrix),ignore_index = True)
 
     movies_id = list(similar_movies.sum().sort_values(ascending=False).index)
-    preserved = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(movies_id)])
-    movie_list=list(Movie.objects.filter(id__in = movies_id).order_by(preserved)[:10])
+    movies_id_recommend = [each for each in movies_id if each not in movie_id_watched]
+    preserved = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(movies_id_recommend)])
+    movie_list=list(Movie.objects.filter(id__in = movies_id_recommend).order_by(preserved)[:10])
 
-    # movies = Movie.objects.filter(watch=True)
-    # query = request.GET.get('q')
-
-    # if query:
-    #     movies = Movie.objects.filter(Q(title__icontains=query)).distinct()
-    #     return render(request, 'recommend/watch.html', {'movies': movies})
-    context = {'movies': movie_list}
+    context = {'movie_list': movie_list}
     return render(request, 'recommend/recommend.html', context)
 
 
