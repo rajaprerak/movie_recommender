@@ -38,11 +38,11 @@
             {% for movie in movies %}
                 <div class="col-sm-2 col-md-2 ">
                     <div class="thumbnail">
-                        <h4>{{movie.title}}</h4>
+                        <center><h5>{{movie.title}}</h5></center>
                         <a href="{% url 'detail' movie.id %}">
                             <img src="{{ movie.movie_logo.url}}" class="img-responsive">
                         </a>
-                        <h5>{{movie.genre}}</h5>
+                        <!-- <h5>{{movie.genre}}</h5> -->
                     </div>
                 </div>
                 {% endfor %}
