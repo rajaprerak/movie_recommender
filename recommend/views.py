@@ -59,11 +59,12 @@ def detail(request, movie_id):
         # for rating
         else:
             rate = request.POST['rating']
-            ratingObject = Myrating()
-            ratingObject.user = request.user
-            ratingObject.movie = movies
-            ratingObject.rating = rate
-            ratingObject.save()
+            if Myrating.objects.all().values().filter(movie_id=movie_id,user=request.user):
+                Myrating.objects.all().values().filter(movie_id=movie_id,user=request.user).update(rating=rate)
+            else:
+                q=Myrating(user=request.user,movie=movie,rating=rate)
+                q.save()
+
             messages.success(request, "Rating has been submitted!")
 
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

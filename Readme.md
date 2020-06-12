@@ -2,16 +2,9 @@
 A Web Based user-item Movie Recommendation Engine using Collaborative Filtering.
 
 
-### Technologies Used
+### Tech Stack
 
-##### Web Technologies
-HTML , CSS , JavaScript , Bootstrap , Django
-
-##### Machine Learning Library
-Numpy , Pandas , Scipy
-
-##### Database
-SQLite
+Django, Python, HTML , CSS , JavaScript , Bootstrap , SQLite, Pandas, AWS S3, Heroku
 
 
 ### To run
