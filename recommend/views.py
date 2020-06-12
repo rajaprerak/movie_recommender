@@ -23,6 +23,7 @@ def index(request):
     return render(request, 'recommend/list.html', {'movies': movies})
 
 
+# Show details of the movie
 def detail(request, movie_id):
     if not request.user.is_authenticated:
         return redirect("login")
@@ -38,7 +39,7 @@ def detail(request, movie_id):
         update = False
     if request.method == "POST":
 
-        # for watch list
+        # For my list
         if 'watch' in request.POST:
             watch_flag = request.POST['watch']
             if watch_flag == 'on':
@@ -56,7 +57,7 @@ def detail(request, movie_id):
                 messages.success(request, "Movie removed from your list!")
 
             
-        # for rating
+        # For rating
         else:
             rate = request.POST['rating']
             if Myrating.objects.all().values().filter(movie_id=movie_id,user=request.user):
@@ -70,6 +71,7 @@ def detail(request, movie_id):
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     out = list(Myrating.objects.filter(user=request.user.id).values())
 
+    # To display ratings in the movie detail page
     movie_rating = 0
     rate_flag = False
     for each in out:
@@ -82,6 +84,7 @@ def detail(request, movie_id):
     return render(request, 'recommend/detail.html', context)
 
 
+# MyList functionality
 def watch(request):
 
     if not request.user.is_authenticated:
@@ -89,7 +92,6 @@ def watch(request):
     if not request.user.is_active:
         raise Http404
 
-    # my_list = MyList.objects.filter(watch=True)
     movies = Movie.objects.filter(mylist__watch=True,mylist__user=request.user)
     query = request.GET.get('q')
 
@@ -100,12 +102,13 @@ def watch(request):
     return render(request, 'recommend/watch.html', {'movies': movies})
 
 
+# To get similar movies based on user rating
 def get_similar(movie_name,rating,corrMatrix):
     similar_ratings = corrMatrix[movie_name]*(rating-2.5)
     similar_ratings = similar_ratings.sort_values(ascending=False)
     return similar_ratings
 
-
+# Recommendation Algorithm
 def recommend(request):
 
     if not request.user.is_authenticated:
@@ -116,7 +119,7 @@ def recommend(request):
 
     movie_rating=pd.DataFrame(list(Myrating.objects.all().values()))
 
-    new_user=movie_rating.user_id.unique().shape[0] + 2
+    new_user=movie_rating.user_id.unique().shape[0]
     current_user_id= request.user.id
 	# if new user not rated any movie
     if current_user_id>new_user:
