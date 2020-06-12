@@ -1,14 +1,14 @@
-
-
 import datetime
-AWS_ACCESS_KEY_ID = "AKIA35YPNNHOEBY4KRLT"
-AWS_SECRET_ACCESS_KEY = "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"
+import os
+
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 AWS_FILE_EXPIRE = 200
 AWS_PRELOAD_METADATA = True
 AWS_QUERYSTRING_AUTH = True
 
 DEFAULT_FILE_STORAGE = 'movie_recommender.aws.utils.MediaRootS3BotoStorage'
-AWS_STORAGE_BUCKET_NAME = 'awesome-movie-recommender'
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
 S3DIRECT_REGION = 'us-east-2'
 AWS_S3_REGION_NAME = 'us-east-2' 
 S3_URL = '//%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
