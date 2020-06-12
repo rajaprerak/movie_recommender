@@ -32,7 +32,6 @@ def detail(request, movie_id):
     movie = Movie.objects.get(id=movie_id)
     
     temp = list(MyList.objects.all().values().filter(movie_id=movie_id,user=request.user))
-    print(temp)
     if temp:
         update = temp[0]['watch']
     else:
