@@ -1,30 +1,37 @@
-# Movie-Recommender-System
-Django based movie recommendation system using collaborative filtering technique.
+# Django based music streaming website
+> https://galvanic-music.herokuapp.com/
 
-## Deployed webapp
-> https://awesome-movie-recommender.herokuapp.com/
-
-### Tech Stack
-
-Django, Python, HTML , CSS , JavaScript , Bootstrap , SQLite, Pandas, AWS S3, Heroku
+![GitHub stars](https://img.shields.io/github/stars/rajaprerak/movie_recommender) 
+[![Maintenance](https://img.shields.io/badge/maintained-yes-green.svg)](https://github.com/rajaprerak/movie_recommender/commits/master)
+[![Website shields.io](https://img.shields.io/badge/website-up-yellow)](https://awesome-movie-recommender.herokuapp.com/)
+[![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
 
 
-### To run
+## Installation 📦
+
+>pip install -r requirements.txt
+
+#### Clone
+
+- Clone this repo to your local machine.
+
+#### Run server locally
+
+```shell
+$ python manage.py runserver
 ```
-python manage.py runserver
-```
-#### Open your browser and go to this address
-```
-http://127.0.0.1:8000
-```
+> Go to localhost:8000
 
-#### Web-App Functionalities
+---
+## Features 📋
 * User can register and login.
 * User can search through various movies and look through its details.
 * User can give rating to the movies.
 * User can add movie to their watch list.
 * User can get movie recommendation (Recommendation algorithm (Collaborative Filtering) which suggests new movies based on the ratings given by user.)
+---
 
+## Algorithm
 ##### Collabortive Filtering (Recommender Algorithm)
 * Collaborative filtering filters information by using the interactions and data collected by the system from other users. It's based on the idea that people who agreed in their evaluation of certain items are likely to agree again in the future.
 * When we want to find a new movie to watch we'll often ask our friends for recommendations. Naturally, we have greater trust in the recommendations from friends who share tastes similar to our own.
@@ -33,3 +40,41 @@ http://127.0.0.1:8000
     * **User-based**, which measures the similarity between target users and other users.
     * **Item-based**, which measures the similarity between the items that target users rate or interact with and other items.
     > I have used **user based** collaborative filtering in this project.
+     
+     
+  ---
+
+## Contributing 💡
+
+
+#### Step 1
+
+- **Option 1**
+    - 🍴 Fork this repo!
+
+- **Option 2**
+    - 👯 Clone this repo to your local machine.
+
+
+#### Step 2
+
+- **Build your code** 🔨🔨🔨
+
+#### Step 3
+
+- 🔃 Create a new pull request.
+
+## Team ✨
+
+| <a href="https://rajaprerak.github.io" target="_blank">**Prerak Raja**</a>
+| :---: |
+| [![Prerak Raja](https://github.com/rajaprerak.png?size=100)](https://rajaprerak.github.io)    
+| <a href="https://github.com/rajaprerak" target="_blank">`github.com/rajaprerak`</a>
+
+
+## License
+[![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
+
+- **[MIT license](http://opensource.org/licenses/mit-license.php)**
+
+                                                                                                                                                                                                                                                                        
