@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-from movie_recommender.aws.conf import *
+# from movie_recommender.aws.conf import *
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '40_$n*hs61m(shf^y0q6&th7i^b!t1rw6k-458_0)ed34ji73v'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['awesome-movie-recommender.herokuapp.com', '127.0.0.1']
 
 # Application definition
@@ -120,10 +120,10 @@ USE_TZ = True
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
 STATIC_URL = '/static/'
-# STATICFILES_DIRS = ([
-#     os.path.join(BASE_DIR, "static"),
-# ])
-STATICFILES_DIRS = ()
+STATICFILES_DIRS = ([
+    os.path.join(BASE_DIR, "static"),
+])
+# STATICFILES_DIRS = ()
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
