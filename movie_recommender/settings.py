@@ -24,7 +24,7 @@ SECRET_KEY = '40_$n*hs61m(shf^y0q6&th7i^b!t1rw6k-458_0)ed34ji73v'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-ALLOWED_HOSTS = ['127.0.0.1', 'awesome-movie-recommender.herokuapp.com/']
+ALLOWED_HOSTS = ['awesome-movie-recommender.herokuapp.com', '127.0.0.1']
 
 # Application definition
 
@@ -120,9 +120,9 @@ USE_TZ = True
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
 STATIC_URL = '/static/'
-STATICFILES_DIRS = ([
-    os.path.join(BASE_DIR, "static"),
-])
+# STATICFILES_DIRS = ([
+#     os.path.join(BASE_DIR, "static"),
+# ])
 STATICFILES_DIRS = ()
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
