@@ -7,7 +7,7 @@
     <center style="color:#fff"><h2>Welcome {{user.username}}!!</h2></center>
 {% endif %}
 
-<div class="container">
+<div class="container" >
     <div class="col-xs-6 col-xs-offset-3">
     	<form class="form-horizontal" role="search" method="get" action=''>
             <div class="form-group">
@@ -33,14 +33,14 @@
 <br>
 
 <!-- Movie list -->
-    <div class="row">
+    <div class="row" >
             {% if movies %}
             {% for movie in movies %}
-                <div class="col-sm-2 col-md-2 ">
-                    <div class="thumbnail">
+                <div class="col-sm-2 col-md-2">
+                    <div class="thumbnail" style="border-radius: 22px 22px 22px 22px;">
                         <center><h5>{{movie.title}}</h5></center>
                         <a href="{% url 'detail' movie.id %}">
-                            <img src="{{ movie.movie_logo.url}}" class="img-responsive">
+                            <img src="{{ movie.movie_logo.url}}" class="img-responsive" style="border-radius: 22px 22px 22px 22px;">
                         </a>
                         <!-- <h5>{{movie.genre}}</h5> -->
                     </div>

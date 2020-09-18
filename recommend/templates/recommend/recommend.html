@@ -15,12 +15,12 @@
             {% if movie_list %}
                 {% for movie in movie_list %}
                     <div class="col-sm-2 col-md-2 ">
-                        <div class="thumbnail">
-                            <h4>{{movie.title}}</h4>
+                        <div class="thumbnail" style="border-radius: 22px 22px 22px 22px;">
+                            <center><h4>{{movie.title}}</h4></center>
                             <a href="{% url 'detail' movie.id %}">
-                                <img src="{{ movie.movie_logo.url}}" class="img-responsive">
+                                <img src="{{ movie.movie_logo.url}}" class="img-responsive" style="border-radius: 22px 22px 22px 22px;">
                             </a>
-                            <h5>{{movie.genre}}</h5>
+<!--                            <center><h5>{{movie.genre}}</h5></center>-->
                         </div>
                     </div>
                 {% endfor %}
