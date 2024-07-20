@@ -8,7 +8,7 @@ from django.db.models import Q
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.db.models import Case, When
-import pandas as pd
+import pandas as pd # type: ignore
 
 # Create your views here.
 
@@ -138,14 +138,19 @@ def recommend(request):
 
     similar_movies = pd.DataFrame()
     for movie,rating in user_filtered:
-        similar_movies = similar_movies.append(get_similar(movie,rating,corrMatrix),ignore_index = True)
+        similar_rating = get_similar(movie,rating,corrMatrix)
+        similar_movies = pd.concat([similar_movies,similar_rating])
+        # similar_movies.append(get_similar(movie,rating,corrMatrix))
+        # similar_movies = pd.DataFrame(similar_movies)
+     #   similar_movies = pd.concat()
 
-    movies_id = list(similar_movies.sum().sort_values(ascending=False).index)
-    movies_id_recommend = [each for each in movies_id if each not in movie_id_watched]
-    preserved = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(movies_id_recommend)])
-    movie_list=list(Movie.objects.filter(id__in = movies_id_recommend).order_by(preserved)[:10])
+        movies_id = list(similar_movies.sum(axis = 1).sort_values(ascending=False).index)
+        movies_id_recommend = [each for each in movies_id if each not in movie_id_watched]
+        preserved = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(movies_id_recommend)])
+        movie_list=list(Movie.objects.filter(id__in = movies_id_recommend).order_by(preserved)[:10])
 
-    context = {'movie_list': movie_list}
+        context = {'movie_list': movie_list}
+
     return render(request, 'recommend/recommend.html', context)
 
 
